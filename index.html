@@ -1,0 +1,295 @@
+<html>
+
+<header>
+    <title>Cool Bingo</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <style>
+        body{
+            padding:10px;
+            margin: auto;
+            background-color: #fecd04;
+        }
+        .bboard {
+            background-color: #fecd04;
+            width: 650px;
+            display: grid;
+            grid-template-columns: 100px 100px 100px 100px 100px;
+            padding: 10px;
+        }
+
+        .bbox {            
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            color: #456084;
+            background-color: white;
+            border: 3px solid #fecd04;
+            padding: 20px;
+            font-size: 13px;
+            text-align: center;
+            height: 100px;
+            width:100px;
+        }
+        #boardtitle{
+            background-image: url("btitle.png");
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            height:160px;
+            width:650px;
+            background-repeat: no-repeat;
+        }
+
+        #s13{
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            background-image: url("center.png");
+        }
+
+
+        #buttoncontainer{
+            margin: 0 auto;
+            padding:10px;
+        }
+
+        .marker{
+            display: none;
+        }
+
+        
+
+        .oldmarker{
+            background: #00f0f0;
+            opacity: 0.5;
+            z-index: 9;
+            height:50px;
+            width:50px;
+            border-radius:50%;
+            margin: 0 auto;
+            position: absolute;
+        }
+
+    </style>
+
+    <script>
+        squares = [
+            "you know",
+            "NUTs",
+            "better and better",
+            "these people",
+            "dad behavior",
+            "this guy worked for me",
+            "head scratch",
+            "BOMB PIC",
+            "loud notification",
+            "rants",
+            "*waits for reactions*",
+            "getting busy",
+            "right??",
+            "age gap joke",
+            "foreign wife",
+            "iNnoVAtiOn",
+            "famous name drop",
+            "i know this guy",
+            "smug",
+            "fun meeting??",
+            "i worked with this guy",
+            "post meeting rants",
+            "*teases jeremy*",
+            "prestigious name drop",
+            "mentions bodily injury"
+        ];
+
+        function shuffle(array) {
+            let currentIndex = array.length,  randomIndex;
+          
+            // While there remain elements to shuffle.
+            while (currentIndex != 0) {
+          
+              // Pick a remaining element.
+              randomIndex = Math.floor(Math.random() * currentIndex);
+              currentIndex--;
+          
+              // And swap it with the current element.
+              [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+            }
+          
+            return array;
+          }
+
+        function makeBoard(){
+            newarr = shuffle(squares);
+            //console.log(newarr);
+            for(var i = 0 ; i<newarr.length; i++){
+                if (i+1!=13){
+                    var bbox = document.getElementById(`s${i+1}`);
+                    bbox.style['background']="#ffffff";
+                    bbox.innerHTML = newarr[i] + `<div class="marker" id="ms${i+1}"></div>`;
+                }
+                
+                //console.log(`s${i+1}`)
+                //console.log(bbox.innerHTML)
+            }
+        }
+
+        function showMarker(){
+            //markerid = $`m{i}`
+        }
+
+        window.onload = function(){
+            makeBoard()
+        };
+
+
+        function checkWin(){
+            if(checkRows() |checkCols() | checkDiagonals() )
+            {
+                alert("BINGO...you know");
+            }
+            
+        }
+
+        function checkRows(){
+            for(var i=0; i<5; i++){
+                s1 = document.getElementById(`ms${1+(i*5)}`).style['display']=="block";
+                s2 = document.getElementById(`ms${2+(i*5)}`).style['display']=="block";
+                if(3+(i*5)==13){
+                    s3=true;
+                } else{
+                    s3 = document.getElementById(`ms${3+(i*5)}`).style['display']=="block";
+                }
+                s4 = document.getElementById(`ms${4+(i*5)}`).style['display']=="block";
+                s5 = document.getElementById(`ms${5+(i*5)}`).style['display']=="block";
+                console.log(`rows: ${s1+s2+s3+s4+s5}`)
+                if (s1+s2+s3+s4+s5 == 5){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkCols(){
+            for(var i=0; i<5; i++){
+                s1 = document.getElementById(`ms${(i+1)}`).style['display']=="block";
+                s2 = document.getElementById(`ms${(i+1)+5}`).style['display']=="block";
+                if ((i+1)+10==13){
+                    s3=true;
+                } else{
+                    s3 = document.getElementById(`ms${(i+1)+10}`).style['display']=="block";
+                }
+                
+                s4 = document.getElementById(`ms${(i+1)+15}`).style['display']=="block";
+                s5 = document.getElementById(`ms${(i+1)+20}`).style['display']=="block";
+                console.log(`columns: ${s1+s2+s3+s4+s5}`)
+                if (s1+s2+s3+s4+s5 == 5){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkDiagonals(){
+            sd1 = document.getElementById("ms1").style['display']=="block";
+            sd2 = document.getElementById("ms7").style['display']=="block";
+            sd3 = document.getElementById("ms19").style['display']=="block";
+            sd4 = document.getElementById("ms25").style['display']=="block";
+            console.log(`diagonal1: ${sd1+sd2+sd3+sd4}`)
+            if (sd1+sd2+sd3+sd4 == 4){
+                return true;
+            }
+
+            sd1 = document.getElementById("ms5").style['display']=="block";
+            sd2 = document.getElementById("ms9").style['display']=="block";
+            sd3 = document.getElementById("ms17").style['display']=="block";
+            sd4 = document.getElementById("ms21").style['display']=="block";
+            console.log(`diagonal2: ${sd1+sd2+sd3+sd4}`)
+            if (sd1+sd2+sd3+sd4 == 4){
+                return true;
+            }
+            return false;
+        }
+
+        $(document.body).click(function(evt){
+            markedColor = "#00f0f0";
+            var clicked = evt.target;
+            var currentID = clicked.id || "No ID!";
+            //console.log(currentID)
+            var y = document.getElementById(currentID).offsetTop;
+            var x = document.getElementById(currentID).offsetLeft;
+            //console.log(`${currentID} | ${x} | ${y}`)
+            markerid = `m${currentID}`;
+            //console.log(`${markerid} : ${document.getElementById(markerid)}`)
+            if(markerid=="mscenter"){return;}
+            if(document.getElementById(markerid).style['display']!="block"){
+                document.getElementById(currentID).style['background']=markedColor;
+                document.getElementById(markerid).style['display']="block";
+                //if(markerid=="mscenter"){document.getElementById(currentID).style['backgroundImage']=`url("center.png")`};
+            } else{
+                document.getElementById(currentID).style['background']="#ffffff";
+                document.getElementById(markerid).style['display']="none";
+            }
+            //setTimeout(1000);
+            checkWin();
+            //document.getElementById(markerid).style.position = `calc(40+123);`;
+            //document.getElementById(markerid).style.left.offsetLeft = x + 'px';
+            //console.log(`${document.getElementById(markerid).offsetLeft} | ${document.getElementById(markerid).offsetTop}`)
+            //$(clicked).html(currentID);
+        })
+
+
+    </script>
+</header>
+
+<div id="buttoncontainer">
+    <button type="button" class="btn btn-dark" onclick="makeBoard()">Reset Board</button>
+</div>
+
+<body>
+    <div  id="boardtitle">
+        <div class="col-lg-1"></div>
+    </div>
+    <div class="bboard">
+        <!-- squares -->
+        <div class="bbox" id="s1"><div class="marker" id="ms1" style="display: none;"></div></div>
+        <div class="bbox" id="s2"><div class="marker" id="ms2" s="1"></div></div>
+        <div class="bbox" id="s3"><div class="marker" id="ms3"></div></div>
+        <div class="bbox" id="s4"><div class="marker" id="ms4"></div></div>
+        <div class="bbox" id="s5"><div class="marker" id="ms5"></div></div>
+        
+        <div class="bbox" id="s6"><div class="marker" id="ms6"></div></div>
+        <div class="bbox" id="s7"><div class="marker" id="ms7"></div></div>
+        <div class="bbox" id="s8"><div class="marker" id="ms8"></div></div>
+        <div class="bbox" id="s9"><div class="marker" id="ms9"></div></div>
+        <div class="bbox" id="s10"><div class="marker" id="ms10"></div></div>
+
+        <div class="bbox" id="s11"><div class="marker" id="ms11"></div></div>        
+        <div class="bbox" id="s12"><div class="marker" id="ms12"></div></div>
+        <div class="bbox" id="s13"><div class="marker" id="ms13"></div></div>
+        <div class="bbox" id="s14"><div class="marker" id="ms14"></div></div>
+        <div class="bbox" id="s15"><div class="marker" id="ms15"></div></div>
+    
+        <div class="bbox" id="s16"><div class="marker" id="ms16"></div></div>        
+        <div class="bbox" id="s17"><div class="marker" id="ms17"></div></div>
+        <div class="bbox" id="s18"><div class="marker" id="ms18"></div></div>
+        <div class="bbox" id="s19"><div class="marker" id="ms19"></div></div>
+        <div class="bbox" id="s20"><div class="marker" id="ms20"></div></div>
+
+        <div class="bbox" id="s21"><div class="marker" id="ms21"></div></div>
+        <div class="bbox" id="s22"><div class="marker" id="ms22"></div></div>        
+        <div class="bbox" id="s23"><div class="marker" id="ms23"></div></div>
+        <div class="bbox" id="s24"><div class="marker" id="ms24"></div></div>
+        <div class="bbox" id="s25"><div class="marker" id="ms25"></div></div> 
+    </div>
+    
+    
+    
+    
+</body>
+
+
+
+
+</html>
